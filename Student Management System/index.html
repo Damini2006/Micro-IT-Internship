@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Management System</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8f5f0;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #4a4e69;
+    }
+
+    .menu {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    .menu button {
+      background-color: #bfa2db;
+      color: white;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .menu button:hover {
+      background-color: #9a8c98;
+    }
+
+    .section {
+      display: none;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    input,
+    select,
+    textarea {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    button.submit-btn {
+      background-color: #4a4e69;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button.submit-btn:hover {
+      background-color: #37354b;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Student Management System</h1>
+
+    <div class="menu">
+      <button onclick="showSection('enroll')">📋 Enroll Student</button>
+      <button onclick="showSection('attendance')">📅 Attendance</button>
+      <button onclick="showSection('grades')">📘 Grades</button>
+      <button onclick="showSection('communication')">💬 Communication</button>
+    </div>
+
+    <section id="enroll" class="section">
+      <h2>Enroll Student</h2>
+      <input type="text" id="studentName" placeholder="Student Name" />
+      <input type="number" id="studentAge" placeholder="Age" />
+      <input type="text" id="studentGrade" placeholder="Grade" />
+      <button class="submit-btn" onclick="addStudent()">Add Student</button>
+      <ul id="studentList"></ul>
+    </section>
+
+    <section id="attendance" class="section">
+      <h2>Mark Attendance</h2>
+      <input type="text" placeholder="Student Name" id="attendName" />
+      <select id="attendStatus">
+        <option value="Present">Present</option>
+        <option value="Absent">Absent</option>
+      </select>
+      <button class="submit-btn" onclick="markAttendance()">Mark</button>
+      <h3>Attendance Records</h3>
+      <ul id="attendanceList"></ul>
+    </section>
+
+    <section id="grades" class="section">
+      <h2>Assign Grades</h2>
+      <input type="text" placeholder="Student Name" id="gradeName" />
+      <input type="text" placeholder="Subject" id="gradeSubject" />
+      <input type="text" placeholder="Grade (e.g., A+)" id="gradeValue" />
+      <button class="submit-btn" onclick="assignGrade()">Assign</button>
+      <h3>Grade Records</h3>
+      <ul id="gradesList"></ul>
+    </section>
+
+    <section id="communication" class="section">
+      <h2>Communication Portal</h2>
+      <input type="text" placeholder="Sender (Student/Parent/Teacher)" id="sender" />
+      <input type="text" placeholder="Receiver" id="receiver" />
+      <textarea placeholder="Message" id="message"></textarea>
+      <button class="submit-btn" onclick="sendMessage()">Send Message</button>
+      <h3>Messages</h3>
+      <ul id="messageList"></ul>
+    </section>
+  </div>
+
+  <script>
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(sec => {
+        sec.classList.remove('active');
+      });
+      document.getElementById(id).classList.add('active');
+    }
+
+    function addStudent() {
+      const name = document.getElementById('studentName').value;
+      const age = document.getElementById('studentAge').value;
+      const grade = document.getElementById('studentGrade').value;
+      const list = document.getElementById('studentList');
+      const entry = document.createElement('li');
+      entry.textContent = `👩‍🎓 ${name}, Age: ${age}, Grade: ${grade}`;
+      list.appendChild(entry);
+      document.getElementById('studentName').value = '';
+      document.getElementById('studentAge').value = '';
+      document.getElementById('studentGrade').value = '';
+    }
+
+    function markAttendance() {
+      const name = document.getElementById('attendName').value;
+      const status = document.getElementById('attendStatus').value;
+      const list = document.getElementById('attendanceList');
+      const entry = document.createElement('li');
+      entry.textContent = `📅 ${name} - ${status}`;
+      list.appendChild(entry);
+      document.getElementById('attendName').value = '';
+    }
+
+    function assignGrade() {
+      const name = document.getElementById('gradeName').value;
+      const subject = document.getElementById('gradeSubject').value;
+      const grade = document.getElementById('gradeValue').value;
+      const list = document.getElementById('gradesList');
+      const entry = document.createElement('li');
+      entry.textContent = `📘 ${name} - ${subject}: ${grade}`;
+      list.appendChild(entry);
+      document.getElementById('gradeName').value = '';
+      document.getElementById('gradeSubject').value = '';
+      document.getElementById('gradeValue').value = '';
+    }
+
+    function sendMessage() {
+      const sender = document.getElementById('sender').value;
+      const receiver = document.getElementById('receiver').value;
+      const message = document.getElementById('message').value;
+      const list = document.getElementById('messageList');
+      const entry = document.createElement('li');
+      entry.textContent = `📩 From ${sender} to ${receiver}: ${message}`;
+      list.appendChild(entry);
+      document.getElementById('sender').value = '';
+      document.getElementById('receiver').value = '';
+      document.getElementById('message').value = '';
+    }
+  </script>
+</body>
+
+</html>
